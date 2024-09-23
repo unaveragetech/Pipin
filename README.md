@@ -16,7 +16,7 @@ Not pipin from LOTR, more like we're gonna pip in the `requirements.txt`—easy 
 - [Conclusion](#conclusion)
 ---
 
-# `install_requirements.py`
+# `#overview`
 
 This script offers a robust, flexible, and automated solution to install the required Python packages listed in `requirements.txt`. It handles the entire process by running `pip`, logging the progress, handling common edge cases (e.g., missing `pip`, omitting specific libraries), and reporting any errors that occur. The script ensures that all dependencies are correctly installed and transparently tracks the installation, making it a must-have for production environments.
 
