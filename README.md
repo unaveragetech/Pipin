@@ -6,32 +6,14 @@ Not pipin from LOTR, more like we're gonna pip in the `requirements.txt`—easy 
 
 
 ## Table of Contents
-1. [Features](#features)
-    - [Automated Dependency Installation](#1-automated-dependency-installation)
-    - [Progress Logging](#2-progress-logging)
-    - [Error Handling](#3-error-handling)
-    - [Omitting Specific Libraries](#4-omitting-specific-libraries)
-    - [Disabling Installation](#5-disabling-installation)
-    - [Handling Missing Pip](#6-handling-missing-pip)
-    - [Separation of Output](#7-separation-of-output)
-    - [Flexibility in Integration](#8-flexibility-in-integration)
-2. [Why Use This Script in Production?](#why-use-this-script-in-production)
-    - [Automated Dependency Management](#1-automated-dependency-management)
-    - [Error Logging and Diagnostics](#2-error-logging-and-diagnostics)
-    - [Transparency and Accountability](#3-transparency-and-accountability)
-    - [Team Collaboration](#4-team-collaboration)
-    - [Flexibility and Control](#5-flexibility-and-control)
-3. [Installation](#installation)
-4. [Usage](#usage)
-    - [Standard Usage](#1-standard-usage)
-    - [Omitting Specific Libraries](#2-omitting-specific-libraries)
-    - [Disabling the Installation Process](#3-disabling-the-installation-process)
-5. [Log File Example](#log-file-example)
-6. [Requirements](#requirements)
-7. [Conclusion](#conclusion)
-
-
-
+- [Overview](#overview)
+- [Features](#features)
+- [Why Use This Script in Production?](#why-use-this-script-in-production)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Log File Example](#log-file-example)
+- [Requirements](#requirements)
+- [Conclusion](#conclusion)
 ---
 
 # `install_requirements.py`
