@@ -14,7 +14,7 @@ Not pipin from LOTR, more like we're gonna pip in the `requirements.txt`—easy 
 - [Log File Example](#log-file-example)
 - [Requirements](#requirements)
 - [Conclusion](#conclusion)
-- [Input examples](## Input Parameters)
+- [Input examples](#Inputs)
 ---
 
 # `#overview`
@@ -198,7 +198,7 @@ The script requires a valid `requirements.txt` file listing the necessary depend
 
 ```
 
-### Input Parameters
+## inputs 
 
 | **Parameter** | **Type** | **Description** | **Default Value** |
 |------------------------|----------------|---------------------------------------------------------------------------------|--------------------|
