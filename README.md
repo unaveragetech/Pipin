@@ -191,7 +191,44 @@ Ensure `pip` is installed and accessible from the command line. The script check
 ```bash
 ### 3. **A Valid `requirements.txt`**
 ```
+
+```bash
 The script requires a valid `requirements.txt` file listing the necessary dependencies for your project.
+
+
+
+### Input Parameters
+
+| **Parameter** | **Type** | **Description** | **Default Value** |
+|------------------------|----------------|---------------------------------------------------------------------------------|--------------------|
+| `omit_libraries` | `list` | A list of specific libraries to exclude from the installation process. | `[]` |
+| `disable_installation` | `bool` | Flag to skip the installation process. | `False` |
+| `log_file` | `str` | The name of the log file where installation details will be recorded. | `install_log.txt` |
+| `requirements_file` | `str` | The name of the requirements file to read packages from. | `requirements.txt` |
+| `verbose` | `bool` | Flag to enable detailed output during the installation process. | `False` |
+
+### Example Usage
+
+```python
+from install_requirements import install_requirements
+
+# Example 1: Standard usage with default parameters
+install_requirements()
+
+# Example 2: Omitting specific libraries
+install_requirements(omit_libraries=['package_to_omit'])
+
+# Example 3: Disabling installation
+install_requirements(disable_installation=True)
+
+# Example 4: Custom log file and requirements file
+install_requirements(log_file='custom_log.txt', requirements_file='custom_requirements.txt')
+
+# Example 5: Enabling verbose output
+install_requirements(verbose=True)
+```
+
+```
 
 ---
 
