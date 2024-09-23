@@ -14,6 +14,7 @@ Not pipin from LOTR, more like we're gonna pip in the `requirements.txt`—easy 
 - [Log File Example](#log-file-example)
 - [Requirements](#requirements)
 - [Conclusion](#conclusion)
+- [Input examples](## Input Parameters)
 ---
 
 # `#overview`
@@ -231,11 +232,11 @@ install_requirements(verbose=True)
 ```
 
 ---
-
+```bash
 ## Conclusion
 
 This script simplifies the management of Python dependencies, especially in production environments where automation and error logging are crucial. By ensuring correct package installation and providing detailed error logs, it offers a reliable and transparent method of maintaining your project's dependencies. The added flexibility for omitting libraries and disabling the installation process makes it adaptable to various development and production setups, ensuring it can meet a wide range of use cases.
-
+```
 ```bash
 ### Plug and play for easy dependency management.
 ```
