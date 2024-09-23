@@ -195,7 +195,7 @@ Ensure `pip` is installed and accessible from the command line. The script check
 ```bash
 The script requires a valid `requirements.txt` file listing the necessary dependencies for your project.
 
-
+```
 
 ### Input Parameters
 
@@ -206,7 +206,7 @@ The script requires a valid `requirements.txt` file listing the necessary depend
 | `log_file` | `str` | The name of the log file where installation details will be recorded. | `install_log.txt` |
 | `requirements_file` | `str` | The name of the requirements file to read packages from. | `requirements.txt` |
 | `verbose` | `bool` | Flag to enable detailed output during the installation process. | `False` |
-
+```bash
 ### Example Usage
 
 ```python
