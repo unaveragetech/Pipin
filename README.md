@@ -3,7 +3,7 @@
 # Pipin
 Not pipin from LOTR, more like we're gonna pip in the `requirements.txt`—easy as that!
 ```
-```bash
+
 
 ## Table of Contents
 1. [Features](#features)
@@ -30,7 +30,7 @@ Not pipin from LOTR, more like we're gonna pip in the `requirements.txt`—easy 
 6. [Requirements](#requirements)
 7. [Conclusion](#conclusion)
 
-```
+
 
 ---
 
