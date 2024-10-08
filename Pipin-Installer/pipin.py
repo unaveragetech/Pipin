@@ -61,8 +61,8 @@ Usage:
 
 Example:
 --------
-    from pipin import install_requirements
-    install_requirements()
+    from pipin import install_requirements<----put this as the first line in the script 
+    install_requirements()<---first run at the end of your script  
 
     # Continue with the rest of your script here...
 
