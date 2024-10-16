@@ -1,68 +1,66 @@
 """
-pipin.py: Automated Dependency Installer with Logging
+pipin.py: Automated Dependency Installer with Logging and Missing Library Detection
 
-This script provides an automated solution for installing Python packages listed in a 'requirements.txt' file. 
-It utilizes 'pip' to install dependencies and logs both successful installations and errors into a log file, 
-allowing for transparent and reliable management of project dependencies.
+This script offers an automated solution for managing Python project dependencies by reading the 'requirements.txt' file, installing listed packages, logging the process, and identifying missing third-party libraries that should be added. With robust logging and flexible configuration, this tool ensures transparent and consistent dependency management across different environments.
 
 Features:
 ---------
-1. Automated Dependency Installation:
+1. **Automated Dependency Installation**:
    - Reads the 'requirements.txt' file and installs packages using 'pip'.
-   - Ideal for ensuring all required dependencies are present without manual installation.
-
-2. Progress Logging:
-   - Logs the installation process in detail, creating a file called 'install_log.txt'.
-   - The log file includes:
-     - A start and end timestamp for the installation.
-     - A section for successfully installed packages.
-     - A section for errors encountered during installation.
+   - Ensures that all required dependencies are installed without manual intervention.
    
-3. Error Handling:
-   - Captures and logs both package-specific errors (e.g., version conflicts or missing packages) 
-     and critical errors (e.g., subprocess failures).
-   - The script continues execution even after an error, ensuring all events are logged.
+2. **Progress Logging**:
+   - Logs the installation process in detail to a file called 'install_log.txt'.
+   - Includes timestamps for when installation starts and ends.
+   - Logs successful installations and any encountered errors.
+   
+3. **Error Handling**:
+   - Captures package-specific issues (e.g., version conflicts) as well as critical failures (e.g., subprocess errors).
+   - Continues installing remaining packages even after an error occurs, logging all events for easy troubleshooting.
 
-4. Transparency and Traceability:
-   - The generated log file allows developers to trace exactly which packages were installed successfully 
-     and which caused issues. This is particularly useful in production environments where package 
-     installation issues must be diagnosed quickly.
+4. **Missing Library Detection**:
+   - Scans all Python files in the project directory for third-party imports.
+   - Identifies any libraries that are imported but not listed in 'requirements.txt' and appends them.
+   
+5. **Customizable**:
+   - Users can omit certain libraries from installation by passing a list of libraries to the `install_requirements()` function.
+   - The installation process can also be entirely disabled using a flag, allowing flexibility in different environments.
 
-5. Flexibility:
-   - The function is designed to be easily integrated into any Python script, making it a convenient tool 
-     for automating dependency management in various project environments.
+6. **Transparency and Traceability**:
+   - All installation steps are logged, making it easy to trace which packages were installed and which failed.
+   - The generated log file provides clear diagnostics for faster issue resolution.
 
-Why use this script in production?
+7. **Efficient CI/CD and Team Collaboration**:
+   - Ensures that all team members and automated environments (such as CI/CD pipelines) are working with the same set of dependencies, preventing version discrepancies.
+   - The logging system makes it easy to audit installations and resolve issues across distributed teams.
+
+Why Use This Script in Production?
 -----------------------------------
-1. Automated Dependency Management:
-   - Streamlines the installation of required packages, minimizing human error and ensuring a consistent environment setup.
-   
-2. Error Logging and Diagnostics:
-   - Captures errors encountered during installation and logs them for easy review, allowing for faster 
-     troubleshooting in production environments.
+1. **Automated Dependency Management**:
+   - Automates the installation of required packages to avoid human error and ensure a consistent environment setup.
 
-3. Transparency and Accountability:
-   - Creates a log file ('install_log.txt') with a clear audit trail of installed packages and errors, 
-     ensuring full transparency for package management.
+2. **Error Logging and Diagnostics**:
+   - Logs all encountered errors, making it easy to troubleshoot failed installations.
 
-4. Efficient Team Collaboration:
-   - Ensures all team members are installing the same set of dependencies, preventing discrepancies 
-     caused by missing or incompatible packages.
+3. **Missing Library Detection**:
+   - Automatically identifies and adds missing third-party libraries to the 'requirements.txt' file, ensuring no dependencies are overlooked.
 
-5. CI/CD Integration:
-   - Can be used in continuous integration/continuous deployment (CI/CD) pipelines to automate 
-     dependency installation and ensure consistency across environments.
+4. **Transparency and Accountability**:
+   - Creates a log file ('install_log.txt') with a detailed audit trail of successful and failed installations.
+
+5. **CI/CD Pipeline Integration**:
+   - Ideal for integrating into continuous integration/continuous deployment (CI/CD) pipelines, automating dependency installation and ensuring consistency across different environments.
 
 Usage:
 ------
 1. Include this script in your project directory.
-2. Make sure you have a 'requirements.txt' file listing the necessary Python packages.
-3. Call the 'install_requirements()' function at the start of your script to automatically install dependencies.
+2. Ensure you have a 'requirements.txt' file listing the necessary Python packages.
+3. Call the `install_requirements()` function at the beginning of your script to automatically install dependencies.
 
 Example:
 --------
-    from pipin import install_requirements<----put this as the first line in the script 
-    install_requirements()<---first run at the end of your script  
+    from pipin import install_requirements
+    install_requirements()
 
     # Continue with the rest of your script here...
 
@@ -70,7 +68,7 @@ Log File Example:
 -----------------
 The 'install_log.txt' file will look like this:
 
-===== Installation started at 2024-09-22 14:00:00 =====
+===== Installation started at 2024-10-16 10:00:00 =====
 
 ===== Successful Installation =====
 Successfully installed package1
@@ -79,19 +77,25 @@ Successfully installed package2
 ===== Installation Errors =====
 Error installing package3: version conflict
 
-===== Installation ended at 2024-09-22 14:03:00 =====
+===== Installation ended at 2024-10-16 10:05:00 =====
 
 Conclusion:
 -----------
-By using this script, you ensure that all required dependencies for your project are installed consistently and reliably, with full logging for troubleshooting any issues. This makes the script ideal for production environments where automation, stability, and transparency are key.
-
+This script ensures all project dependencies are consistently installed and updated, with full logging for transparency and troubleshooting. It also identifies and adds missing libraries to 'requirements.txt', making it an essential tool for production environments where automation, stability, and transparency are crucial.
 """
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# from pipin import install_requirements
 import subprocess
 import os
 from datetime import datetime
 import shutil
+import time
+from tqdm import tqdm  # Loading bar library
+import pkgutil
+import importlib
+import sys
+
 
 def install_requirements(omit_libraries=None, disable_installation=False):
     """
@@ -120,7 +124,7 @@ def install_requirements(omit_libraries=None, disable_installation=False):
             log.write(f"===== Critical Error: 'pip' is missing! at {datetime.now()} =====\n")
         print("Error: 'pip' is not installed. Please install 'pip' to proceed.")
         return
-    
+
     # Read the requirements.txt file
     try:
         with open('requirements.txt', 'r') as req_file:
@@ -130,7 +134,7 @@ def install_requirements(omit_libraries=None, disable_installation=False):
             log.write(f"===== Critical Error: 'requirements.txt' not found at {datetime.now()} =====\n")
         print("Error: 'requirements.txt' not found. Ensure the file exists in the project directory.")
         return
-    
+
     # Filter out any libraries the user wants to omit
     if omit_libraries:
         requirements = [req for req in requirements if not any(omit in req for omit in omit_libraries)]
@@ -138,6 +142,7 @@ def install_requirements(omit_libraries=None, disable_installation=False):
     with open(log_file, 'a') as log:
         log.write(f"\n\n===== Installation started at {datetime.now()} =====\n")
 
+    # Install packages with a progress bar
     try:
         # Install the filtered list of requirements
         if requirements:
@@ -146,14 +151,16 @@ def install_requirements(omit_libraries=None, disable_installation=False):
             with open(temp_req_file, 'w') as temp_file:
                 temp_file.writelines(requirements)
 
-            # Install packages from the temporary requirements file
-            result = subprocess.run(['pip', 'install', '-r', temp_req_file], capture_output=True, text=True)
-            
+            # Loading bar for installation progress
+            with tqdm(total=len(requirements), desc="Installing Packages") as pbar:
+                result = subprocess.run(['pip', 'install', '-r', temp_req_file], capture_output=True, text=True)
+                pbar.update(len(requirements))  # Update the loading bar once installation is complete
+
             # Log success messages
             with open(log_file, 'a') as log:
                 log.write("===== Successful Installation =====\n")
                 log.write(result.stdout)
-            
+
             # Check for errors
             if result.returncode != 0:
                 with open(log_file, 'a') as log:
@@ -162,7 +169,7 @@ def install_requirements(omit_libraries=None, disable_installation=False):
                 print("Failed to install some packages. Check 'install_log.txt' for details.")
             else:
                 print("All packages installed successfully.")
-            
+
             # Clean up the temporary requirements file
             os.remove(temp_req_file)
         else:
@@ -173,10 +180,61 @@ def install_requirements(omit_libraries=None, disable_installation=False):
         with open(log_file, 'a') as log:
             log.write(f"===== Critical Error: {e} =====\n")
         print(f"Installation failed. Error: {e}")
-    
+
     # Finalizing log
     with open(log_file, 'a') as log:
         log.write(f"===== Installation ended at {datetime.now()} =====\n")
 
+    # Check and add missing libraries to requirements.txt
+    add_missing_libraries_to_requirements()
+
+
+def is_standard_lib(module_name):
+    """
+    Checks if a module is part of the Python standard library.
+    """
+    return module_name in sys.builtin_module_names or pkgutil.find_loader(module_name) is None
+
+
+def add_missing_libraries_to_requirements():
+    """
+    Scans all .py files in the current directory for third-party imports and adds any missing libraries to requirements.txt.
+    """
+    all_imports = set()
+    py_files = [f for f in os.listdir('.') if f.endswith('.py')]
+
+    for file in py_files:
+        with open(file, 'r') as f:
+            lines = f.readlines()
+
+        for line in lines:
+            if line.startswith('import ') or line.startswith('from '):
+                parts = line.replace('import', '').replace('from', '').strip().split()
+                if parts:
+                    module = parts[0].split('.')[0]
+                    if not is_standard_lib(module):
+                        all_imports.add(module)
+
+    # Update requirements.txt with missing third-party libraries
+    try:
+        with open('requirements.txt', 'r') as req_file:
+            existing_requirements = req_file.readlines()
+            existing_requirements = [r.strip() for r in existing_requirements]
+    except FileNotFoundError:
+        existing_requirements = []
+
+    missing_libs = [lib for lib in all_imports if lib not in existing_requirements]
+
+    if missing_libs:
+        with open('requirements.txt', 'a') as req_file:
+            req_file.writelines([lib + '\n' for lib in missing_libs])
+        print(f"Added missing libraries to requirements.txt: {missing_libs}")
+    else:
+        print("No new libraries to add to requirements.txt.")
+
+
+# Ensure that the script runs when install_requirements() is called
+if __name__ == "__main__":
+    install_requirements()
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
