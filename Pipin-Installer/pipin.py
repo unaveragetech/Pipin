@@ -85,8 +85,27 @@ This script ensures all project dependencies are consistently installed and upda
 """
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# from pipin import install_requirements
 import subprocess
+import sys
+
+def ensure_tqdm_installed():
+    """
+    Ensures that 'tqdm' is installed. If not, it installs the package.
+    This function is used to add the tqdm progress bar library as a dependency.
+    """
+    try:
+        # Try importing tqdm
+        import tqdm
+    except ImportError:
+        # If tqdm is not installed, install it via pip
+        print("tqdm not found. Installing it now...")
+        subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'tqdm'])
+        print("tqdm successfully installed.")
+
+# Call the function at the top to ensure tqdm is available
+ensure_tqdm_installed()
+
+# from pipin import install_requirements
 import os
 from datetime import datetime
 import shutil
@@ -94,7 +113,6 @@ import time
 from tqdm import tqdm  # Loading bar library
 import pkgutil
 import importlib
-import sys
 
 
 def install_requirements(omit_libraries=None, disable_installation=False):
