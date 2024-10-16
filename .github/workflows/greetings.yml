@@ -20,6 +20,8 @@ jobs:
             - **Environment**: Include information about your environment (e.g., OS, version, browser).
             - **Screenshots**: If applicable, attach screenshots or logs to illustrate the issue.
 
+            If you need further assistance, feel free to [Contact me](https://formsubmit.co/el/sumuhu).
+
             Your feedback is invaluable in improving our project, and we appreciate your contribution!
 
           pr-message: |
@@ -30,4 +32,12 @@ jobs:
             - **Code Guidelines**: Please ensure your code adheres to our coding standards and formatting rules.
             - **Review Process**: Once you submit, our team will review your changes. We may ask for adjustments, so keep an eye on any comments.
 
+            If you have any questions or need assistance, don’t hesitate to [Contact me](https://formsubmit.co/el/sumuhu).
+            https://formsubmit.co/el/sumuhu
+
             Your efforts help us enhance the project, and we’re excited to work with you!
+
+          general-message: |
+            Thank you for contributing to our project! Please make sure to provide detailed information when presenting an issue. This helps us address your concerns quickly and effectively.
+
+            If you would like to share additional information or if you have any questions, please reach out via this [Contact me](https://formsubmit.co/el/sumuhu) form.
