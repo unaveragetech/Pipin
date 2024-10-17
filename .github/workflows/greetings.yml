@@ -90,8 +90,8 @@ jobs:
           - [ ] Link related issues to provide context.
 
           **Documentation Links**:
-          - [Contribution Guidelines](CONTRIBUTING.md)
-          - [Issue Reporting Guidelines](ISSUE_TEMPLATE.md)
+          - [Contribution Guidelines](https://github.com/unaveragetech/Pipin/blob/08bc81c7baccde1b7e6a321bbe07c1e925cfa10e/CONTRIBUTING.md)
+          - [Issue Reporting Guidelines](https://github.com/unaveragetech/Pipin/blob/08bc81c7baccde1b7e6a321bbe07c1e925cfa10e/ISSUE_TEMPLATE.md)
 
           **Expected Format**:
           When reporting issues or making feature requests, please follow the format above. This ensures that we can address your concerns quickly and effectively.
