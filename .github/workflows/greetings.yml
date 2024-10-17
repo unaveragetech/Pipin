@@ -5,7 +5,7 @@ on:
     types: [opened]  # Triggers when any new issue is opened
   pull_request:
     types: [opened]  # Triggers when any new pull request is opened
-  push:              # Triggers on any push events
+  push:
     branches:
       - main         # Triggers only for pushes to the main branch
 
@@ -15,40 +15,51 @@ jobs:
     permissions:
       issues: write
       pull-requests: write
+      contents: read
     steps:
       - name: Issue Greeting
         if: github.event_name == 'issues' && github.event.action == 'opened'
         run: |
-          echo "Welcome to our project! 🎉 Thank you for opening your first issue. To help us assist you effectively, please include the following details:"
-          echo "- **Description**: Clearly describe the problem or feature you’re suggesting."
-          echo "- **Steps to Reproduce**: If you're reporting a bug, list the steps to reproduce it."
-          echo "- **Expected vs. Actual Behavior**: Explain what you expected to happen and what actually occurred."
-          echo "- **Environment**: Include information about your environment (e.g., OS, version, browser)."
-          echo "- **Screenshots**: If applicable, attach screenshots or logs to illustrate the issue."
-          echo ""
-          echo "If you need further assistance, feel free to [Contact me](https://formsubmit.co/el/sumuhu)."
-          echo ""
-          echo "Your feedback is invaluable in improving our project, and we appreciate your contribution!"
+          MESSAGE="Welcome to our project! 🎉 Thank you for opening your issue, @${{ github.actor }}! To help us assist you effectively, please include the following details:
+          - **Description**: Clearly describe the problem or feature you’re suggesting.
+          - **Steps to Reproduce**: If you're reporting a bug, list the steps to reproduce it.
+          - **Expected vs. Actual Behavior**: Explain what you expected to happen and what actually occurred.
+          - **Environment**: Include information about your environment (e.g., OS, version, browser).
+          - **Screenshots**: If applicable, attach screenshots or logs to illustrate the issue.
+
+          If you need further assistance, feel free to [Contact me](https://formsubmit.co/el/sumuhu).
+
+          Your feedback is invaluable in improving our project, and we appreciate your contribution!"
+
+          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -d "{\"body\": \"$MESSAGE\"}" \
+          "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments"
 
       - name: Pull Request Greeting
         if: github.event_name == 'pull_request' && github.event.action == 'opened'
         run: |
-          echo "Amazing! You've submitted your first pull request! 🎉 Thank you for your contribution. Here are a few things to keep in mind:"
-          echo "- **Description**: Ensure your pull request includes a clear description of what changes you made and why."
-          echo "- **Related Issues**: Link any related issues to provide context."
-          echo "- **Testing**: Describe any tests you’ve run to verify your changes and ensure nothing is broken."
-          echo "- **Code Guidelines**: Please ensure your code adheres to our coding standards and formatting rules."
-          echo "- **Review Process**: Once you submit, our team will review your changes. We may ask for adjustments, so keep an eye on any comments."
-          echo ""
-          echo "If you have any questions or need assistance, don’t hesitate to [Contact me](https://formsubmit.co/el/sumuhu)."
-          echo ""
-          echo "Your efforts help us enhance the project, and we’re excited to work with you!"
+          MESSAGE="Amazing! You've submitted your first pull request, @${{ github.actor }}! 🎉 Thank you for your contribution. Here are a few things to keep in mind:
+          - **Description**: Ensure your pull request includes a clear description of what changes you made and why.
+          - **Related Issues**: Link any related issues to provide context.
+          - **Testing**: Describe any tests you’ve run to verify your changes and ensure nothing is broken.
+          - **Code Guidelines**: Please ensure your code adheres to our coding standards and formatting rules.
+          - **Review Process**: Once you submit, our team will review your changes. We may ask for adjustments, so keep an eye on any comments.
+
+          If you have any questions or need assistance, don’t hesitate to [Contact me](https://formsubmit.co/el/sumuhu).
+
+          Your efforts help us enhance the project, and we’re excited to work with you!"
+
+          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -d "{\"body\": \"$MESSAGE\"}" \
+          "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/comments"
 
       - name: Push Notification
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
-          echo "A new push has been made to the main branch. Thank you for your contribution!"
-          echo ""
-          echo "Please remember to include detailed information in any issues or pull requests you create. This helps us address your concerns quickly and effectively."
-          echo ""
-          echo "If you would like to share additional information or if you have any questions, please reach out via this [Contact me](https://formsubmit.co/el/sumuhu) form."
+          MESSAGE="A new push has been made to the main branch by @${{ github.actor }}. Thank you for your contribution!
+          Please remember to include detailed information in any issues or pull requests you create. This helps us address your concerns quickly and effectively.
+          If you would like to share additional information or if you have any questions, please reach out via this [Contact me](https://formsubmit.co/el/sumuhu) form."
+
+          # You can choose to comment on the main repository's issue, create a new issue, or notify via another method.
+          # For example, you might want to create an issue or just log the message in some way.
+          echo "$MESSAGE"
