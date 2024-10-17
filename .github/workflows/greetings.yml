@@ -5,6 +5,9 @@ on:
     types: [opened]  # Triggers when a new issue is opened
   pull_request:
     types: [opened]  # Triggers when a new pull request is opened
+  push:              # Triggers on push events
+    branches:
+      - main         # Change to your default branch if it's not 'main'
 
 jobs:
   greeting:
@@ -44,3 +47,8 @@ jobs:
             Thank you for contributing to our project! Please make sure to provide detailed information when presenting an issue. This helps us address your concerns quickly and effectively.
 
             If you would like to share additional information or if you have any questions, please reach out via this [Contact me](https://formsubmit.co/el/sumuhu) form.
+
+      - name: Notify on Push
+        if: github.event_name == 'push'  # Only runs if the event is a push
+        run: |
+          echo "A push was made to the repository. Thank you for your contribution!"
