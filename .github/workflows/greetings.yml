@@ -1,6 +1,10 @@
 name: Greetings
 
-on: [pull_request_target, issues]
+on:
+  issues:
+    types: [opened]  # Triggers when a new issue is opened
+  pull_request:
+    types: [opened]  # Triggers when a new pull request is opened
 
 jobs:
   greeting:
@@ -33,7 +37,6 @@ jobs:
             - **Review Process**: Once you submit, our team will review your changes. We may ask for adjustments, so keep an eye on any comments.
 
             If you have any questions or need assistance, don’t hesitate to [Contact me](https://formsubmit.co/el/sumuhu).
-            https://formsubmit.co/el/sumuhu
 
             Your efforts help us enhance the project, and we’re excited to work with you!
 
