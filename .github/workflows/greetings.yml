@@ -17,8 +17,15 @@ jobs:
       pull-requests: write
       contents: read
     steps:
+      - name: Set up GitHub CLI
+        run: |
+          echo "Setting up GitHub CLI"
+          gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+
       - name: Issue Greeting
         if: github.event_name == 'issues' && github.event.action == 'opened'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           MESSAGE="Welcome to our project! 🎉 Thank you for opening your issue, @${{ github.actor }}! To help us assist you effectively, please include the following details:
           - **Description**: Clearly describe the problem or feature you’re suggesting.
@@ -40,6 +47,8 @@ jobs:
 
       - name: Pull Request Greeting
         if: github.event_name == 'pull_request' && github.event.action == 'opened'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           MESSAGE="Amazing! You've submitted your first pull request, @${{ github.actor }}! 🎉 Thank you for your contribution. Here are a few things to keep in mind:
           - **Description**: Ensure your pull request includes a clear description of what changes you made and why.
@@ -61,6 +70,8 @@ jobs:
 
       - name: Push Notification
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           MESSAGE="A new push has been made to the main branch by @${{ github.actor }}. Thank you for your contribution!
           Please remember to include detailed information in any issues or pull requests you create. This helps us address your concerns quickly and effectively.
