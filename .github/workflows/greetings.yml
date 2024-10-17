@@ -2,12 +2,12 @@ name: Greetings
 
 on:
   issues:
-    types: [opened]  # Triggers when any new issue is opened
+    types: [opened]
   pull_request:
-    types: [opened]  # Triggers when any new pull request is opened
+    types: [opened]
   push:
     branches:
-      - main         # Triggers only for pushes to the main branch
+      - main
 
 jobs:
   greeting:
@@ -60,6 +60,10 @@ jobs:
           Please remember to include detailed information in any issues or pull requests you create. This helps us address your concerns quickly and effectively.
           If you would like to share additional information or if you have any questions, please reach out via this [Contact me](https://formsubmit.co/el/sumuhu) form."
 
-          # You can choose to comment on the main repository's issue, create a new issue, or notify via another method.
-          # For example, you might want to create an issue or just log the message in some way.
+          # Log the push notification in the Actions log
           echo "$MESSAGE"
+
+          # Optionally, you could create a new issue for push notifications (uncomment below)
+           curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+           -d "{\"title\": \"New Push Notification\", \"body\": \"$MESSAGE\"}" \
+           "https://api.github.com/repos/${{ github.repository }}/issues"
