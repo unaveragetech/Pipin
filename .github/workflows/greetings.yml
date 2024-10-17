@@ -74,8 +74,31 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           MESSAGE="A new push has been made to the main branch by @${{ github.actor }}. Thank you for your contribution!
-          Please remember to include detailed information in any issues or pull requests you create. This helps us address your concerns quickly and effectively.
-          If you would like to share additional information or if you have any questions, please reach out via this [Contact me](https://formsubmit.co/el/sumuhu) form."
+
+          **Purpose of This Notification**:
+          This issue serves as a record of the recent changes pushed to the main branch. It helps keep all contributors informed and ensures we maintain clarity in our development process.
+
+          **Contribution Acknowledgment**:
+          We appreciate your effort in contributing to our project! Every contribution helps improve our community and the project itself.
+
+          **Checklist for Future Submissions**:
+          - [ ] Clearly describe the problem or feature you’re suggesting.
+          - [ ] If you're reporting a bug, list the steps to reproduce it.
+          - [ ] Explain what you expected to happen and what actually occurred.
+          - [ ] Include information about your environment (e.g., OS, version, browser).
+          - [ ] Attach any relevant screenshots or logs.
+          - [ ] Link related issues to provide context.
+
+          **Documentation Links**:
+          - [Contribution Guidelines](LINK_TO_CONTRIBUTION_GUIDELINES)
+          - [Issue Reporting Guidelines](LINK_TO_ISSUE_REPORTING_GUIDELINES)
+
+          **Expected Format**:
+          When reporting issues or making feature requests, please follow the format above. This ensures that we can address your concerns quickly and effectively.
+
+          If you would like to share additional information or if you have any questions, please reach out via this [Contact me](https://formsubmit.co/el/sumuhu) form.
+
+          Your feedback is invaluable in improving our project, and we appreciate your contribution!"
 
           # Create a new issue for push notifications
           gh api \
