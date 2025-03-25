@@ -222,8 +222,18 @@ def add_missing_libraries_to_requirements():
     py_files = [f for f in os.listdir('.') if f.endswith('.py')]
 
     for file in py_files:
-        with open(file, 'r') as f:
-            lines = f.readlines()
+        try:
+            # Try UTF-8 first
+            with open(file, 'r', encoding='utf-8') as f:
+                lines = f.readlines()
+        except UnicodeDecodeError:
+            try:
+                # Fallback to system default encoding with error handling
+                with open(file, 'r', encoding=sys.getdefaultencoding(), errors='ignore') as f:
+                    lines = f.readlines()
+            except Exception as e:
+                print(f"Warning: Could not read file {file}: {e}")
+                continue
 
         for line in lines:
             if line.startswith('import ') or line.startswith('from '):
@@ -235,7 +245,7 @@ def add_missing_libraries_to_requirements():
 
     # Update requirements.txt with missing third-party libraries
     try:
-        with open('requirements.txt', 'r') as req_file:
+        with open('requirements.txt', 'r', encoding='utf-8') as req_file:
             existing_requirements = req_file.readlines()
             existing_requirements = [r.strip() for r in existing_requirements]
     except FileNotFoundError:
@@ -244,7 +254,7 @@ def add_missing_libraries_to_requirements():
     missing_libs = [lib for lib in all_imports if lib not in existing_requirements]
 
     if missing_libs:
-        with open('requirements.txt', 'a') as req_file:
+        with open('requirements.txt', 'a', encoding='utf-8') as req_file:
             req_file.writelines([lib + '\n' for lib in missing_libs])
         print(f"Added missing libraries to requirements.txt: {missing_libs}")
     else:
